@@ -22,7 +22,8 @@ File Server Launched at your localhost:9000
 You can start sharing on your network with IP Address: 192.168.43.217:9000
 
 ####################################################
-File Server Root Folder:  /Volumes/Donriddo```
+File Server Root Folder:  /Volumes/Donriddo
+```
 
 # You can see how with the HELP command
 
