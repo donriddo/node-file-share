@@ -6,6 +6,7 @@ const path = require('path');
 const url = require('url');
 const EJS = require('ejs');
 const program = require('commander');
+const zipper = require('adm-zip');
 
 let rootFolder;
 let port;
@@ -64,20 +65,27 @@ function serveStatic(file, req, res) {
 
 function serveFile(fileName, req, res, download) {
   console.log('File Name Requested: ', fileName);
-  if (download === '1') {
-    res.writeHead(200, { 'Content-disposition': 'attachment; filename=' + fileName.split('/').pop() });
-    return fs.createReadStream(fileName).pipe(res);
-  } else {
-    fs.readFile(fileName, (err, file) => {
-      if (err) {
-        res.writeHead(500);
-        return res.end('Error while reading File: ' + fileName);
+  fs.exists(fileName, exists => {
+    if (!exists) {
+      res.writeHead(404);
+      return res.end('File Not Found or has been moved');
+    } else {
+      if (download === '1') {
+        res.writeHead(200, { 'Content-disposition': 'attachment; filename=' + fileName.split('/').pop() });
+        return fs.createReadStream(fileName).pipe(res);
       } else {
-        res.writeHead(200);
-        return res.end(file);
+        fs.readFile(fileName, (err, file) => {
+          if (err) {
+            res.writeHead(500);
+            return res.end('Error while reading File: ' + fileName);
+          } else {
+            res.writeHead(200);
+            return res.end(file);
+          }
+        });
       }
-    });
-  }
+    }
+  });
 }
 
 function serveDir(dirName, req, res, download) {
@@ -91,38 +99,48 @@ function serveDir(dirName, req, res, download) {
         'The path you requested does not exist or has been moved'
       );
     } else {
-      fs.readdir(pathName, (err, data) => {
-        if (err) {
-          res.writeHead(500);
-          return res.end('An error occured while trying to read DIR');
-        } else {
-          let files = [];
-          data.forEach(datum => {
-            if (fs.lstatSync(pathName + '/' + datum).isDirectory()) {
-              files.push(
-                {
-                  type: 'dir',
-                  path: baseName + '/' + datum,
-                  name: datum
-                }
-              );
-            } else {
-              files.push(
-                {
-                  type: 'file',
-                  path: baseName + '/' + datum,
-                  name: datum
-                }
-              );
-            }
-          });
-          fs.readFile('public/index.ejs', 'utf-8', (err, template) => {
-            let html = EJS.render(template, { files: files });
-            res.writeHead(200, { 'Content-type': 'text/html' });
-            return res.end(html);
-          });
-        }
-      });
+      if (download === '1') {
+        let zip = new zipper();
+        zip.addLocalFolder(pathName);
+        zip.writeZip(pathName.split('/').pop() + '.zip');
+        res.writeHead(200, { 'Content-disposition': 'attachment; filename=' + pathName.split('/').pop() + '.zip' });
+        fs.createReadStream(pathName.split('/').pop() + '.zip').pipe(res);
+        fs.unlink(pathName.split('/').pop() + '.zip');
+        return;
+      } else {
+        fs.readdir(pathName, (err, data) => {
+          if (err) {
+            res.writeHead(500);
+            return res.end('An error occured while trying to read DIR');
+          } else {
+            let files = [];
+            data.forEach(datum => {
+              if (fs.lstatSync(pathName + '/' + datum).isDirectory()) {
+                files.push(
+                  {
+                    type: 'dir',
+                    path: baseName + '/' + datum,
+                    name: datum
+                  }
+                );
+              } else {
+                files.push(
+                  {
+                    type: 'file',
+                    path: baseName + '/' + datum,
+                    name: datum
+                  }
+                );
+              }
+            });
+            fs.readFile('public/index.ejs', 'utf-8', (err, template) => {
+              let html = EJS.render(template, { files: files });
+              res.writeHead(200, { 'Content-type': 'text/html' });
+              return res.end(html);
+            });
+          }
+        });
+      }
     }
   });
 }

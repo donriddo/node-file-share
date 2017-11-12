@@ -28,6 +28,7 @@
   },
   "homepage": "https://github.com/donriddo/node-file-share#readme",
   "dependencies": {
+    "adm-zip": "^0.4.7",
     "commander": "^2.11.0",
     "ejs": "^2.5.7",
     "ip": "^1.1.5"
