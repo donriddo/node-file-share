@@ -9,6 +9,11 @@ const program = require('commander');
 
 let rootFolder;
 let port;
+const mimeTypes = {
+  '.js': 'text/javascript',
+  '.html': 'text/html',
+  '.css': 'text/css'
+}
 program.arguments('<folder>').option(
   '-p, --port <port>', 'The PORT to serve files on'
 ).action((folder) => {
@@ -30,8 +35,52 @@ program.arguments('<folder>').option(
 
 
 
+function serveStatic(file, req, res) {
+  console.log('File Requested: ', file);
+  fs.exists('public/' + file, exists => {
+    if (!exists) {
+      res.writeHead(404);
+      return res.end(
+        file + ' Not Found'
+      );
+    } else {
+      fs.readFile('public/' + file, 'utf-8', (err, staticFile) => {
+        if (err) {
+          res.writeHead(500);
+          return res.end('Error reading File')
+        } else {
+          res.writeHead(
+            200,
+            {
+              'Content-type': mimeTypes[path.extname(file)] || ''
+            }
+          );
+          return res.end(staticFile);
+        }
+      });
+    }
+  });
+}
 
-function serveDir(dirName, req, res) {
+function serveFile(fileName, req, res, download) {
+  console.log('File Name Requested: ', fileName);
+  if (download === '1') {
+    res.writeHead(200, { 'Content-disposition': 'attachment; filename=' + fileName.split('/').pop() });
+    return fs.createReadStream(fileName).pipe(res);
+  } else {
+    fs.readFile(fileName, (err, file) => {
+      if (err) {
+        res.writeHead(500);
+        return res.end('Error while reading File: ' + fileName);
+      } else {
+        res.writeHead(200);
+        return res.end(file);
+      }
+    });
+  }
+}
+
+function serveDir(dirName, req, res, download) {
   let pathName = path.normalize(dirName);
   let baseName = pathName.substr(rootFolder.length + 1);
   console.log('Path Name Requested: ', pathName, 'Base Name: ', baseName);
@@ -81,12 +130,23 @@ function serveDir(dirName, req, res) {
 http.createServer((req, res) => {
   let query = url.parse(decodeURI(req.url), true).query;
   if (query.dir) {
-    console.log('Query: ', query);
-    serveDir(rootFolder + '/' + query.dir.replace(/\./g, ''), req, res);
+    serveDir(
+      rootFolder + '/' + query.dir.replace(/\.\./g, ''),
+      req,
+      res,
+      query.download
+    );
   } else if (query.file) {
-    return res.end('Thanks for choosing a file');
+    serveFile(
+      rootFolder + '/' + query.file.replace(/\.\./g, ''),
+      req,
+      res,
+      query.download
+    );
   } else {
-    serveDir(rootFolder, req, res);
+    let lookup = url.parse(decodeURI(req.url)).pathname;
+    lookup = path.normalize(lookup);
+    lookup === '/' ? serveDir(rootFolder, req, res) : serveStatic(lookup, req, res);
   }
 }).listen({ port: port }, () => {
   console.log('####################################################');
