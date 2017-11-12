@@ -71,7 +71,13 @@ function serveFile(fileName, req, res, download) {
       return res.end('File Not Found or has been moved');
     } else {
       if (download === '1') {
-        res.writeHead(200, { 'Content-disposition': 'attachment; filename=' + fileName.split('/').pop() });
+        let attachment = fileName.split('/').pop();
+        ext = attachment.split('.').pop();
+        file = attachment.split('.');
+        file.pop();
+        file = file.join('.');
+        file = file.replace(/\W+/g, '_');
+        res.writeHead(200, { 'Content-disposition': 'attachment; filename=' + file + '.' + ext });
         return fs.createReadStream(fileName).pipe(res);
       } else {
         fs.readFile(fileName, (err, file) => {
