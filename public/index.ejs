@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>File Share</title>
+</head>
+<body>
+<ul>
+  <% for(var i=0; i<files.length; i++) { %>
+    <li>
+      <a href="?<%= files[i].type %>=<%= files[i].path %>">
+        <%= files[i].name %>
+      </a>
+    </li>
+    <% } %>
+</ul>
+
+</body>
+</html>

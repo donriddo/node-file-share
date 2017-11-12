@@ -1,0 +1,31 @@
+{
+  "name": "node-file-share",
+  "version": "1.0.0",
+  "description": "A Node.js command line tool to serve files and share on a local network.",
+  "main": "index.js",
+  "scripts": {
+    "test": "mocha"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/donriddo/node-file-share.git"
+  },
+  "keywords": [
+    "file-server",
+    "file-share",
+    "serve",
+    "files",
+    "flash",
+    "share"
+  ],
+  "author": "Ridwan Taiwo <donriddo@gmail.com>",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/donriddo/node-file-share/issues"
+  },
+  "homepage": "https://github.com/donriddo/node-file-share#readme",
+  "dependencies": {
+    "ejs": "^2.5.7",
+    "ip": "^1.1.5"
+  }
+}
