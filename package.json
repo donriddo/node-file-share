@@ -6,6 +6,9 @@
   "scripts": {
     "test": "mocha"
   },
+  "bin": {
+    "nfshare": "./index.js"
+  },
   "repository": {
     "type": "git",
     "url": "git+https://github.com/donriddo/node-file-share.git"
