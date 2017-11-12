@@ -5,21 +5,31 @@ const fs = require('fs');
 const path = require('path');
 const url = require('url');
 const EJS = require('ejs');
+const program = require('commander');
 
 let rootFolder;
+let port;
+program.arguments('<folder>').option(
+  '-p, --port <port>', 'The PORT to serve files on'
+).action((folder) => {
 
-fs.realpath(process.argv[2], (err, resolvedPath) => {
-  if (err) {
-    console.log('There was an error reading the directory specified');
-    console.log('Path ' + process.argv[2] + ' does not exist');
-    console.log(err);
-    process.exit();
-  } else {
-    rootFolder = resolvedPath;
-    console.log('File Server Root Folder: ', rootFolder);
-  }
-});
-const port = process.argv[3] || 1994;
+  fs.realpath(folder, (err, resolvedPath) => {
+    if (err) {
+      console.log('There was an error reading the directory specified');
+      console.log('Path ' + folder + ' does not exist');
+      console.log(err);
+      process.exit();
+    } else {
+      rootFolder = resolvedPath;
+      console.log('File Server Root Folder: ', rootFolder);
+    }
+  });
+  port = program.port || 1994;
+
+}).parse(process.argv);
+
+
+
 
 function serveDir(dirName, req, res) {
   let pathName = path.normalize(dirName);
