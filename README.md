@@ -12,11 +12,6 @@ A Node.js command line tool to serve files and share on a local network.
 
 `nfshare <root-folder-to-share> -p <PORT>`
 
-# You can see how with the HELP command
-
-`nfshare --help`
-
-
 # Example
 
 `nfshare /Volumes/Donriddo -p 9000`
@@ -28,3 +23,9 @@ You can start sharing on your network with IP Address: 192.168.43.217:9000
 
 ####################################################
 File Server Root Folder:  /Volumes/Donriddo```
+
+# You can see how with the HELP command
+
+`nfshare --help`
+
+
