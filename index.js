@@ -10,6 +10,7 @@ const zipper = require('adm-zip');
 
 let rootFolder;
 let port;
+const publicFolder = path.resolve(__dirname, 'public');
 const mimeTypes = {
   '.js': 'text/javascript',
   '.html': 'text/html',
@@ -38,14 +39,14 @@ program.arguments('<folder>').option(
 
 function serveStatic(file, req, res) {
   console.log('File Requested: ', file);
-  fs.exists('public/' + file, exists => {
+  fs.exists(publicFolder + file, exists => {
     if (!exists) {
       res.writeHead(404);
       return res.end(
         file + ' Not Found'
       );
     } else {
-      fs.readFile('public/' + file, 'utf-8', (err, staticFile) => {
+      fs.readFile(publicFolder + file, 'utf-8', (err, staticFile) => {
         if (err) {
           res.writeHead(500);
           return res.end('Error reading File')
@@ -139,7 +140,7 @@ function serveDir(dirName, req, res, download) {
                 );
               }
             });
-            fs.readFile('public/index.ejs', 'utf-8', (err, template) => {
+            fs.readFile(path.join(publicFolder, '/index.ejs'), 'utf-8', (err, template) => {
               let html = EJS.render(template, { files: files });
               res.writeHead(200, { 'Content-type': 'text/html' });
               return res.end(html);
