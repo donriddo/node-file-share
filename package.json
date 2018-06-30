@@ -4,7 +4,7 @@
   "description": "A Node.js command line tool to serve files and share on a local network.",
   "main": "index.js",
   "scripts": {
-    "test": "mocha"
+    "test": "echo 'No tests to be run' && exit 0"
   },
   "bin": {
     "nfshare": "./index.js"

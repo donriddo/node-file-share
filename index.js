@@ -16,7 +16,7 @@ const mimeTypes = {
   '.html': 'text/html',
   '.css': 'text/css'
 }
-program.arguments('<folder>').option(
+program.version('1.0.1', 'v, --version').arguments('<folder>').option(
   '-p, --port <port>', 'The PORT to serve files on'
 ).action((folder) => {
 
