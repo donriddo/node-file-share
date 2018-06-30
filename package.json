@@ -1,6 +1,6 @@
 {
   "name": "node-file-share",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "description": "A Node.js command line tool to serve files and share on a local network.",
   "main": "index.js",
   "scripts": {
