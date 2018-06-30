@@ -20,7 +20,8 @@
         <thead>
           <th>#</th>
           <th>Name</th>
-          <th>Type</th>          
+          <th>Type</th>         
+          <th>Size</th>         
           <th>Action</th>
         </thead>
         <tbody>
@@ -33,6 +34,7 @@
                 </a>
               </td>
               <td><%= files[i].type.toUpperCase() %></td>
+              <td><%= files[i].size || '' %></td>
               <td>
                 <button class="primary">
                   <a href="?<%= files[i].type %>=<%= files[i].path %>&download=1">

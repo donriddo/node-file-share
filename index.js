@@ -35,7 +35,29 @@ program.arguments('<folder>').option(
 
 }).parse(process.argv);
 
+function processSize(size, unit) {
+  const units = {
+    B: 'KB',
+    KB: 'MB',
+    MB: 'GB'
+  }
+  if (size >= 1024 && unit !== 'GB') {
+    return processSize(size/1024, units[unit]);
+  }
 
+  return size.toFixed(2) + ' ' + unit;
+}
+
+function getFileSize(file, callback) {
+  fs.stat(file, (err, stats) => {
+    if (err) {
+       callback(null);
+    }
+
+    const fileSize = processSize(stats.size, 'B');
+    callback(fileSize);
+  });
+}
 
 function serveStatic(file, req, res) {
   console.log('File Requested: ', file);
@@ -131,13 +153,16 @@ function serveDir(dirName, req, res, download) {
                   }
                 );
               } else {
-                files.push(
-                  {
-                    type: 'file',
-                    path: baseName + '/' + datum,
-                    name: datum
-                  }
-                );
+                getFileSize(dirName + '/' + datum, (fileSize) => {
+                  files.push(
+                    {
+                      type: 'file',
+                      path: baseName + '/' + datum,
+                      name: datum,
+                      size: fileSize || "Can't get Size"
+                    }
+                  );
+                });
               }
             });
             fs.readFile(path.join(publicFolder, '/index.ejs'), 'utf-8', (err, template) => {
