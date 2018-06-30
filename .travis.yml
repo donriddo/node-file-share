@@ -1,0 +1,9 @@
+language: node_js
+deploy:
+  provider: npm
+  email: donriddo@gmail.com
+  api_key:
+    secure: NWQ7RmhKw6shpOTOEZM4jvRjr0S0cGFMlm3MHCcj+Ic8fXMDmhvjg4rr6MhpPzMAKP+0g29PNSH++UZarxm8rmBH/qScdvpG1IGbgUn/6Dpl1dRySo25el1KX+iHCRAIcT9JayKh2oozj9YpbK4pMD4fcO/c/U03mtk7HCJMXitmuD2bpdYYBFGCDucOlxD5xgzj5itDOFOAlv7XZJGCZ663cBXzjSdX2Bd5oyvuFvE7+uQlHEp8poTv+fRtJfCA6+uhiybKSf1mfGeuun+7rI4Y9XPUK01LqtBEDAQfzPZmX3tl2INwixm6+kwoZXWe+ct5H6XtoWFkbb10C5QEIIJgLJnL/96IELnx0mDaag8v14RJlmNs4AxzU5termLzpcZRTKBnC2cFpygCCYhXlWXv68zoRkOCu0XJEN2d8xsMt/kHLkY/T++If6SMK4jLHPRk43eYwBnTGzZKirQyvNSUG0A1PgvALKMR+wbmSg4uuv8xX6dxwbrbdwa5cuF3qDS94AUJuU1Se2Qb3ZNYw0PNOZ4Y879luESXlnX21/Aj5nfrstlRffDxIkp7bOkqYZ+VW5mKzHGn/Qz8rY7l4in0z6SO4HhEagkVNMb6tOLEG4DuJ6t1xLUIiKswsVApx57V5uNp+9R6jcGiqtoLBUi3a/ctm9ICcIxr75DOMLo=
+  on:
+    branch: master
+    repo: donriddo/node-file-share
