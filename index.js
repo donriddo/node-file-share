@@ -87,13 +87,14 @@ function serveStatic(file, req, res) {
 }
 
 function serveFile(fileName, req, res, download) {
+  const blacklistExtensions = ['.avi', '.mp4', '.mov', '.flv', '.mpg', '.3gp', '.asf'];
   console.log('File Name Requested: ', fileName);
   fs.exists(fileName, exists => {
     if (!exists) {
       res.writeHead(404);
       return res.end('File Not Found or has been moved');
     } else {
-      if (download === '1') {
+      if (download === '1' || path.extname(fileName) in blacklistExtensions) {
         let attachment = fileName.split('/').pop();
         ext = attachment.split('.').pop();
         file = attachment.split('.');
