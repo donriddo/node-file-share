@@ -47,6 +47,8 @@ upload_files() {
 }
 
 deploy_package() {
+    echo _auth = $NPM_API_KEY > ~/.npmrc
+    echo email = "donriddo@gmail.com" >> ~/.npmrc
     npm publish
 }
 
