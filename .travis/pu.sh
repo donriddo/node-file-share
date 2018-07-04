@@ -47,13 +47,10 @@ upload_files() {
 }
 
 deploy_package() {
-    export NPM_USERNAME=donriddo
-    export NPM_EMAIL=donriddo@gmail.com
-    npm adduser <<!
-    $NPM_USERNAME
-    $NPM_PASSWORD
-    $NPM_EMAIL
-!
+    echo "//registry.npmjs.org/:_password=${NPM_PASSWORD}" > ~/.npmrc
+    echo "//registry.npmjs.org/:_authToken=${NPM_API_KEY}" >> ~/.npmrc
+    echo "//registry.npmjs.org/:username=donriddo" >> ~/.npmrc
+    echo "//registry.npmjs.org/:email=donriddo@gmail.com" >> ~/.npmrc
     npm publish
 }
 
