@@ -46,6 +46,11 @@ upload_files() {
   git push --tags
 }
 
+deploy_package() {
+    npm publish
+}
+
 setup_git
 make_version
 upload_files
+deploy_package
