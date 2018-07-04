@@ -47,8 +47,8 @@ upload_files() {
 }
 
 deploy_package() {
-    export $NPM_USERNAME=donriddo
-    export $NPM_EMAIL=donriddo
+    export NPM_USERNAME=donriddo
+    export NPM_EMAIL=donriddo@gmail.com
     npm adduser <<!
     $NPM_USERNAME
     $NPM_PASSWORD
