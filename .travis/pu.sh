@@ -48,9 +48,9 @@ upload_files() {
 
 deploy_package() {
     npm adduser <<!
-    "donriddo"
+    donriddo
     $NPM_PASSWORD
-    "donriddo@gmail.com"
+    donriddo@gmail.com
 !
     npm publish
 }
