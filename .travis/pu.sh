@@ -1,29 +1,22 @@
 #!/bin/sh
 
 setup_git() {
-    echo "Setting up git"
   # Set the user name and email to match the API token holder
   # This will make sure the git commits will have the correct photo
   # and the user gets the credit for a checkin
   git config --global user.email "donrriddo@gmail.com"
-    echo "Set up git email"
   git config --global user.name "donriddo"
-    echo "Set up git username"
   git config --global push.default matching
-    echo "Set up git push default"
   
   # Get the credentials from a file
   git config credential.helper "store --file=.git/credentials"
-    echo "Set up git credentials helper"
   
   # This associates the API Key with the account
   echo "https://${GITHUB_API_KEY}:@github.com" > .git/credentials
-    echo "Set up git api_key"
 
 }
 
 make_version() {
-    echo "Making version"
   # Make sure that the workspace is clean
   # It could be "dirty" if
   # 1. package-lock.json is not aligned with package.json
