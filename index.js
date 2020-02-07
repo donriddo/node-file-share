@@ -197,7 +197,7 @@ http.createServer((req, res) => {
   } else {
     let lookup = url.parse(decodeURI(req.url)).pathname;
     lookup = path.normalize(lookup);
-    lookup === '/' ? serveDir(rootFolder, req, res) : serveStatic(lookup, req, res);
+    lookup === path.sep ? serveDir(rootFolder, req, res) : serveStatic(lookup, req, res);
   }
 }).listen({ port: port }, () => {
   console.log('####################################################');
